@@ -1,4 +1,4 @@
-package main
+package jsonresponse
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func respondWithJson(w http.ResponseWriter, code int, payload interface{}) {
+func RespondWithJson(w http.ResponseWriter, code int, payload interface{}) {
 	data, err := json.Marshal(payload) // converts payload to binary
 	if err != nil {
 		log.Printf("Failed to marshal JSON response-> %v\n", payload)
@@ -20,7 +20,7 @@ func respondWithJson(w http.ResponseWriter, code int, payload interface{}) {
 
 }
 
-func respondWithError(w http.ResponseWriter, code int, msg string) {
+func RespondWithError(w http.ResponseWriter, code int, msg string) {
 	if code > 499 {
 		log.Println("Responding with 5XX error", msg)
 	}
@@ -29,7 +29,7 @@ func respondWithError(w http.ResponseWriter, code int, msg string) {
 		Error string `json:"error"` // by doing this key of the json object will be error -> error: {...}
 	}
 
-	respondWithJson(w, code, errResponse{
+	RespondWithJson(w, code, errResponse{
 		Error: msg,
 	})
 }

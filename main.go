@@ -1,15 +1,23 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
 
+	userhandlers "github.com/AnkitNayan83/StocksApi/userHandlers"
+
+	"github.com/AnkitNayan83/StocksApi/internal/database"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 )
+
+type apiConfig struct {
+	DB *database.Queries
+}
 
 func main() {
 	err := godotenv.Load()
@@ -27,6 +35,17 @@ func main() {
 		log.Fatal("Database URL not found in the environment")
 	}
 
+	conn, err := sql.Open("postgres",dbUrl)
+
+	if err != nil {
+		log.Fatal("Databese connection failed: ", err)
+	}
+	db := database.New(conn)
+
+	ApiConfig := apiConfig{
+		DB: db,
+	}
+
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
@@ -41,8 +60,11 @@ func main() {
 	v1Router := chi.NewRouter()
 
 	v1Router.Get("/status", handlerStatus)
+	v1Router.Get("/user",userhandlers.HandlerStatus)
 
 	router.Mount("/api/v1", v1Router)
+	
+
 
 	srv := &http.Server{
 		Handler: router,
