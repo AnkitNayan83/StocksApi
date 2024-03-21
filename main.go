@@ -6,13 +6,13 @@ import (
 	"net/http"
 	"os"
 
-	userhandlers "github.com/AnkitNayan83/StocksApi/userHandlers"
-
 	"github.com/AnkitNayan83/StocksApi/internal/database"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+
+	_ "github.com/lib/pq"
 )
 
 type apiConfig struct {
@@ -60,7 +60,7 @@ func main() {
 	v1Router := chi.NewRouter()
 
 	v1Router.Get("/status", handlerStatus)
-	v1Router.Get("/user",userhandlers.HandlerStatus)
+	v1Router.Post("/user/register",ApiConfig.handlerRegisterUser)
 
 	router.Mount("/api/v1", v1Router)
 	
