@@ -15,8 +15,6 @@ import (
 
 func (apiCfg apiConfig) handlerRegisterUser(w http.ResponseWriter, r *http.Request) {
 
-
-
 	type parameters struct {
 		Email string `json:"email"`
 		FirstName string `json:"firstName"`
@@ -96,8 +94,58 @@ func (apiCfg apiConfig) handlerRegisterUser(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	log.Print(userToken)
-
 	RespondWithJson(w,200,databaseUserToUser(user,userToken))
 
+}
+
+
+func (apiCfg apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {
+
+	type parameters struct {
+		Email string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	params := parameters{}
+
+	err := decoder.Decode(&params)
+
+	if err != nil {
+		RespondWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
+		return
+	}
+
+	if params.Email == "" {
+		RespondWithError(w, 400, fmt.Sprintf("Email is required: %v", err))
+		return
+	}
+
+	if params.Password == ""{
+		RespondWithError(w, 400, fmt.Sprintf("Password is required: %v", err))
+		return
+	}
+
+	user,err:=apiCfg.DB.GetUserWithEmail(r.Context(),params.Email)
+
+	if err!=nil {
+		RespondWithError(w,404,fmt.Sprintf("User not found: %v",err))
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Hashedpassword),[]byte(params.Password))
+
+	if err != nil {
+		RespondWithError(w,401,"Wrong email or password")
+		return
+	}
+
+	userToken, err := createToken(user.ID.String())
+
+	if err != nil {
+		RespondWithError(w,401,fmt.Sprintf("Failed to generate token: %v",err))
+		return
+	}
+
+	RespondWithJson(w,200,databaseUserToUser(user,userToken))
 }

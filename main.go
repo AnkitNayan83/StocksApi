@@ -60,11 +60,12 @@ func main() {
 	v1Router := chi.NewRouter()
 
 	v1Router.Get("/status", handlerStatus)
+
+	// User routes
 	v1Router.Post("/user/register",ApiConfig.handlerRegisterUser)
+	v1Router.Post("/user/login",ApiConfig.handlerLogin)
 
 	router.Mount("/api/v1", v1Router)
-	
-
 
 	srv := &http.Server{
 		Handler: router,
