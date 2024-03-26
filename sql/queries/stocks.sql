@@ -5,3 +5,10 @@ RETURNING *;
 -- name: GetAllStocks :many
 SELECT * FROM stocks
 WHERE quantity > 0;
+
+
+-- name: UpdateStock :one
+UPDATE stocks
+SET companyName = $1, valuePerStock = $2, quantity = $3
+WHERE id = $4
+RETURNING *;

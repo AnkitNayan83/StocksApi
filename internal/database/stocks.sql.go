@@ -85,3 +85,37 @@ func (q *Queries) GetAllStocks(ctx context.Context) ([]Stock, error) {
 	}
 	return items, nil
 }
+
+const updateStock = `-- name: UpdateStock :one
+UPDATE stocks
+SET companyName = $1, valuePerStock = $2, quantity = $3
+WHERE id = $4
+RETURNING id, companyname, valueperstock, quantity, ownerid, created_at, updated_at
+`
+
+type UpdateStockParams struct {
+	Companyname   string
+	Valueperstock float64
+	Quantity      int32
+	ID            uuid.UUID
+}
+
+func (q *Queries) UpdateStock(ctx context.Context, arg UpdateStockParams) (Stock, error) {
+	row := q.db.QueryRowContext(ctx, updateStock,
+		arg.Companyname,
+		arg.Valueperstock,
+		arg.Quantity,
+		arg.ID,
+	)
+	var i Stock
+	err := row.Scan(
+		&i.ID,
+		&i.Companyname,
+		&i.Valueperstock,
+		&i.Quantity,
+		&i.Ownerid,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
