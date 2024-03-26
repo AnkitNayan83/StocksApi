@@ -32,3 +32,35 @@ func databaseUserToUser(dbUser database.User, token string) User {
 		Token: token,
 	}
 }
+
+type Stock struct {
+	ID            uuid.UUID `json:"id"`
+	Companyname   string `json:"companyName"`
+	Valueperstock float64 `json:"valuePerStock"`
+	Quantity      int32 `json:"quantity"`
+	Ownerid       uuid.UUID `json:"ownerId"`
+	CreatedAt     time.Time `json:"createdAt"`
+	UpdatedAt     time.Time `json:"updatedAt"`
+}
+
+func databaseStockToStock(dbStock database.Stock) Stock {
+	return Stock{
+		ID: dbStock.ID,
+		Companyname: dbStock.Companyname,
+		Valueperstock: dbStock.Valueperstock,
+		Quantity: dbStock.Quantity,
+		Ownerid: dbStock.Ownerid,
+		CreatedAt: dbStock.CreatedAt,
+		UpdatedAt: dbStock.UpdatedAt,
+	}
+}
+
+func databaseStocksToStocks(dbStocks []database.Stock) []Stock{
+	stocks := []Stock{}
+
+	for _,stock := range dbStocks {
+		stocks = append(stocks, databaseStockToStock(stock))
+	}
+
+	return stocks;
+}

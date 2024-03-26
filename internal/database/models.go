@@ -11,6 +11,16 @@ import (
 	"github.com/google/uuid"
 )
 
+type Stock struct {
+	ID            uuid.UUID
+	Companyname   string
+	Valueperstock float64
+	Quantity      int32
+	Ownerid       uuid.UUID
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+}
+
 type User struct {
 	ID             uuid.UUID
 	Firstname      string

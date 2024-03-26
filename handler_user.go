@@ -149,12 +149,3 @@ func (apiCfg apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {
 
 	RespondWithJson(w,200,databaseUserToUser(user,userToken))
 }
-
-
-func (apiCfg apiConfig) checkToken(w http.ResponseWriter, r *http.Request, user database.User) {
-	log.Print(user.Email)
-	type msg struct {
-		Msg string `json:"message"`
-	}
-	RespondWithJson(w, 200, msg{Msg: "token testing"})
-}

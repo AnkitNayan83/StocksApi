@@ -65,7 +65,10 @@ func main() {
 	v1Router.Post("/user/register",ApiConfig.handlerRegisterUser)
 	v1Router.Post("/user/login",ApiConfig.handlerLogin)
 
-	v1Router.Get("/token",ApiConfig.middlewareAuth(ApiConfig.checkToken))
+	// Stocks Routes
+	v1Router.Post("/stock",ApiConfig.middlewareAuth(ApiConfig.handlerCreateStocks))
+	v1Router.Get("/stock",ApiConfig.handlerGetStocks)
+	
 
 	router.Mount("/api/v1", v1Router)
 
