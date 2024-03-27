@@ -60,6 +60,6 @@ func (apiCfg apiConfig) handlerBuyStock(w http.ResponseWriter, r *http.Request, 
 		return
 	}
 
-	RespondWithJson(w,201,stockBuy)
+	RespondWithJson(w,201,databaseStockBuyToStockBuy(stockBuy))
 
 }

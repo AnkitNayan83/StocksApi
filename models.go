@@ -64,3 +64,25 @@ func databaseStocksToStocks(dbStocks []database.Stock) []Stock{
 
 	return stocks;
 }
+
+
+
+type Stockbuy struct {
+	ID        uuid.UUID `json:"id"`
+	Userid    uuid.UUID `json:"userId"`
+	Stockid   uuid.UUID `json:"stockId"`
+	Quantity  int32 `json:"quantity"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func databaseStockBuyToStockBuy(dbStockBuy database.Stockbuy) Stockbuy {
+	return Stockbuy{
+		ID: dbStockBuy.ID,
+		Userid: dbStockBuy.Userid,
+		Stockid: dbStockBuy.Stockid,
+		Quantity: dbStockBuy.Quantity,
+		CreatedAt: dbStockBuy.CreatedAt,
+		UpdatedAt: dbStockBuy.UpdatedAt,
+	}
+}
