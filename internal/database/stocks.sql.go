@@ -88,7 +88,7 @@ func (q *Queries) GetAllStocks(ctx context.Context) ([]Stock, error) {
 
 const updateStock = `-- name: UpdateStock :one
 UPDATE stocks
-SET companyName = $1, valuePerStock = $2, quantity = $3
+SET companyName = $1, valuePerStock = $2, quantity = $3, updated_at = CURRENT_TIMESTAMP
 WHERE id = $4 AND ownerId = $5
 RETURNING id, companyname, valueperstock, quantity, ownerid, created_at, updated_at
 `

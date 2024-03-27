@@ -21,6 +21,15 @@ type Stock struct {
 	UpdatedAt     time.Time
 }
 
+type Stockbuy struct {
+	ID        uuid.UUID
+	Userid    uuid.UUID
+	Stockid   uuid.UUID
+	Quantity  int32
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
 type User struct {
 	ID             uuid.UUID
 	Firstname      string
