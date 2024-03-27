@@ -10,5 +10,5 @@ WHERE quantity > 0;
 -- name: UpdateStock :one
 UPDATE stocks
 SET companyName = $1, valuePerStock = $2, quantity = $3
-WHERE id = $4
+WHERE id = $4 AND ownerId = $5
 RETURNING *;

@@ -68,6 +68,7 @@ func main() {
 	// Stocks Routes
 	v1Router.Post("/stock",ApiConfig.middlewareAuth(ApiConfig.handlerCreateStocks))
 	v1Router.Get("/stock",ApiConfig.handlerGetStocks)
+	v1Router.Put("/stock/{stockId}",ApiConfig.middlewareAuth(ApiConfig.handlerUpdateStocks))
 	
 
 	router.Mount("/api/v1", v1Router)

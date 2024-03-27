@@ -120,6 +120,7 @@ func (apiCfg apiConfig) handlerUpdateStocks(w http.ResponseWriter, r *http.Reque
 		Valueperstock: params.ValuePerStocks,
 		Quantity: int32(params.Quantity),
 		ID: stockId,
+		Ownerid: user.ID,
 	})
 
 	if err != nil {
